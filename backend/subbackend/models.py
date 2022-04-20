@@ -17,3 +17,5 @@ class subsDetails(models.Model):
     Started_On = models.CharField(max_length=122)
     Ends_On = models.CharField(max_length=122)
     Invoice_File = models.CharField(max_length=122)
+    subscription = models.ForeignKey(
+        subscription, on_delete=models.CASCADE)

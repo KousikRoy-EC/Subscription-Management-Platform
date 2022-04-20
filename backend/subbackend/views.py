@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from subbackend.model.models import subscription
-from subbackend.serializer import subscriptionSerializer
+from subbackend.models import subsDetails, subscription
+from subbackend.serializers import subscriptionSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -9,7 +9,6 @@ from django.http.response import JsonResponse
 
 @api_view(['POST', 'GET', 'PUT', 'DELETE'])
 def subscriptions(req):
-
     if req.method == 'POST':
         serializer = subscriptionSerializer(data=req.data)
         if serializer.is_valid():
@@ -53,8 +52,9 @@ def getSubsById(request, id):
 
     elif request.method == 'DELETE':
         subscription.delete()
+        subsDetails.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-def invoice():
+def invoice(req, id):
     print("This is invoice")
