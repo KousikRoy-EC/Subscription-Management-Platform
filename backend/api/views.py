@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from subbackend.models import subsDetails, subscription
-from subbackend.serializers import subscriptionSerializer
+from api.models import subsDetails, subscription
+from api.serializers import SubscriptionSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -10,7 +10,7 @@ from django.http.response import JsonResponse
 @api_view(['POST', 'GET', 'PUT', 'DELETE'])
 def subscriptions(req):
     if req.method == 'POST':
-        serializer = subscriptionSerializer(data=req.data)
+        serializer = SubscriptionSerializer(data=req.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -20,7 +20,7 @@ def subscriptions(req):
 
     elif req.method == 'GET':
         data = subscription.objects.all()
-        serializer = subscriptionSerializer(data, many=True)
+        serializer = SubscriptionSerializer(data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     return Response({'key': 'value'}, status=status.HTTP_200_OK)
@@ -29,7 +29,7 @@ def subscriptions(req):
 def currUserSubs(req):
     if req.method == 'GET':
         data = subscription.objects.all()
-        serializer = subscriptionSerializer(data, many=True)
+        serializer = SubscriptionSerializer(data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
 
@@ -40,11 +40,11 @@ def getSubsById(request, id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = subscriptionSerializer(userID)
+        serializer = SubscriptionSerializer(userID)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = subscriptionSerializer(userID, data=request.data)
+        serializer = SubscriptionSerializer(userID, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
