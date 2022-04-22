@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from api.models import subsDetails, subscription
-from api.serializers import SubscriptionSerializer
+from subbackend.models import SubsDetails,  Subscription
+from subbackend.serializers import SubscriptionSerializer, SubscriptionDetailSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -19,7 +19,7 @@ def subscriptions(req):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif req.method == 'GET':
-        data = subscription.objects.all()
+        data = Subscription.objects.all()
         serializer = SubscriptionSerializer(data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
@@ -28,15 +28,15 @@ def subscriptions(req):
 
 def currUserSubs(req):
     if req.method == 'GET':
-        data = subscription.objects.all()
+        data = Subscription.objects.all()
         serializer = SubscriptionSerializer(data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
 
 def getSubsById(request, id):
     try:
-        userID = subscription.objects.get(id=id)
-    except subscription.DoesNotExist:
+        userID = Subscription.objects.get(id=id)
+    except Subscription.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
@@ -51,10 +51,21 @@ def getSubsById(request, id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        subscription.delete()
-        subsDetails.delete()
+        Subscription.delete()
+        SubsDetails.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 def invoice(req, id):
     print("This is invoice")
+
+
+def getUpdatedSubs(req):
+    if req.method == 'POST':
+        serializer = SubscriptionDetailSerializer(data=req.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

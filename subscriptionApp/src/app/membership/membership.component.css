@@ -28,7 +28,7 @@
 .form-style-2 span.required {
   color: red;
 }
-.form-style-2 .tel-number-field {
+.form-style-2 .date-field {
   width: 40px;
   text-align: center;
 }
@@ -37,7 +37,7 @@
   width: 48%;
 }
 .form-style-2 input.input-field,
-.form-style-2 .tel-number-field,
+.form-style-2 .date-field,
 .form-style-2 .textarea-field,
 .form-style-2 .select-field {
   box-sizing: border-box;
@@ -54,7 +54,7 @@
   outline: none;
 }
 .form-style-2 .input-field:focus,
-.form-style-2 .tel-number-field:focus,
+.form-style-2 .date-field:focus,
 .form-style-2 .textarea-field:focus,
 .form-style-2 .select-field:focus {
   border: 1px solid #0c0;

@@ -8,14 +8,13 @@ class Subscription(models.Model):
     Current_End_Date = models.CharField(max_length=122)
     Is_Automatic_Payment_Enabled = models.CharField(max_length=122)
     Last_Modified_On = models.CharField(max_length=122)
-    Status = models.CharField(max_length=122)
+    Status = models.BooleanField
 
 
 class SubsDetails(models.Model):
-    subscriptionID = models.CharField(max_length=20)
     Amount_Paid = models.CharField(max_length=122)
     Started_On = models.CharField(max_length=122)
     Ends_On = models.CharField(max_length=122)
-    Invoice_File = models.CharField(max_length=122)
+    Invoice_File = models.FileField(null=True, blank=True)
     subscription = models.ForeignKey(
         Subscription, on_delete=models.CASCADE)
