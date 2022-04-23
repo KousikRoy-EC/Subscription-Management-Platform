@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from subbackend.models import SubsDetails,  Subscription
 from subbackend.serializers import SubscriptionSerializer, SubscriptionDetailSerializer
@@ -5,6 +6,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework.parsers import MultiPartParser
 
 
 @api_view(['POST', 'GET', 'PUT', 'DELETE'])
@@ -26,42 +30,59 @@ def subscriptions(req):
     return Response({'key': 'value'}, status=status.HTTP_200_OK)
 
 
-def currUserSubs(req):
+def currUserSubs(req, id):
     if req.method == 'GET':
-        data = Subscription.objects.all()
+        data = Subscription.objects.filter(id=id)
         serializer = SubscriptionSerializer(data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
 
 def getSubsById(request, id):
     try:
-        userID = Subscription.objects.get(id=id)
+        subscription = Subscription.objects.get(id=id)
     except Subscription.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = SubscriptionSerializer(userID)
+        serializer = SubscriptionSerializer(subscription)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        serializer = SubscriptionSerializer(userID, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     elif request.method == 'DELETE':
-        Subscription.delete()
-        SubsDetails.delete()
+        subscription.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 def invoice(req, id):
-    print("This is invoice")
+    if req.method == 'GET':
+        data = SubsDetails.objects.filter(id=id)
+        serializer = SubscriptionDetailSerializer(data, many=True)
+        return JsonResponse(serializer.data.Invoice_File, safe=False)
 
 
+@csrf_exempt
+@api_view(["POST"])
 def getUpdatedSubs(req):
     if req.method == 'POST':
+        print(req.data)
+        serializer = SubscriptionDetailSerializer(data=req.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+@api_view(["POST"])
+def renewSubscription(req, id):
+    if req.method == 'POST':
+        print(req.data)
+        startDate = req.data['Started_On']
+        endDate = req.data['Ends_On']
+        Subscription.objects.filter(id=id).update(
+            Current_Start_Date=startDate, Current_End_Date=endDate)
         serializer = SubscriptionDetailSerializer(data=req.data)
         if serializer.is_valid():
             serializer.save()
@@ -69,3 +90,10 @@ def getUpdatedSubs(req):
         else:
             print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def subscriptionDeatils(req):
+    if req.method == 'GET':
+        data = subscriptionDeatils.objects.all()
+        serializer = SubscriptionSerializer(data, many=True)
+        return JsonResponse(serializer.data, safe=False)

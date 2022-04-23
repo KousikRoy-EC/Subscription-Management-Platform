@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Mymodel } from '../model';
+import { subscriptionModel } from '../model';
 import { SubscriptionService } from '../services/subscription.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -13,7 +13,7 @@ export class MembershipComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  newSubscription = new Mymodel();
+  newSubscription = new subscriptionModel();
   Provider_Name!: any;
   Created_On!: any;
   Current_Start_Date!: any;
@@ -32,14 +32,11 @@ export class MembershipComponent implements OnInit {
   addSubscription() {
     this.newSubscription.Provider_Name = this.Provider_Name;
     this.newSubscription.Created_On = this.Created_On;
-    this.newSubscription.Current_Start_Date = this.Current_Start_Date;
-    this.newSubscription.Current_End_Date = this.Current_End_Date;
+    this.newSubscription.Current_Start_Date = 'NA';
+    this.newSubscription.Current_End_Date = 'NA';
     this.newSubscription.Is_Automatic_Payment_Enabled =
       this.Is_Automatic_Payment_Enabled;
-
     this.newSubscription.Last_Modified_On = 'NA';
-    this.newSubscription.Status = 'NA';
-
     this.save();
   }
 

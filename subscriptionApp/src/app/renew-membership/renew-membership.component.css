@@ -92,3 +92,7 @@
 .submit {
   border-radius: 10px;
 }
+
+#option {
+  width: 14rem;
+}

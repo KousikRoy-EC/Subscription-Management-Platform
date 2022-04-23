@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Childmodel } from '../model';
+import { subDetailModel } from '../model';
 import { SubscriptionService } from '../services/subscription.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -11,17 +11,23 @@ import { HttpClient } from '@angular/common/http';
 export class RenewMembershipComponent implements OnInit {
   constructor(public subscservice: SubscriptionService, http: HttpClient) {}
 
-  ngOnInit(): void {}
+  data!: any;
+  ngOnInit(): void {
+    this.subscservice.getAllSubscription().subscribe(
+      (res) => (this.data = res),
+      (err) => console.log(err)
+    );
+  }
 
-  upgradeModel = new Childmodel();
+  upgradeModel = new subDetailModel();
   Amount_Paid!: any;
   Started_On!: any;
   Ends_On!: any;
-  Invoice_File!: any;
-
+  Invoice_File!: File;
+  subscriptionID!: any;
   save() {
     this.subscservice.updateSubscription(this.upgradeModel).subscribe(
-      (res) => console.log('Saved Data sucessfull'),
+      (res) => console.log('res'),
       (err) => console.log(err)
     );
   }
@@ -31,9 +37,13 @@ export class RenewMembershipComponent implements OnInit {
     this.upgradeModel.Ends_On = this.Ends_On;
     this.upgradeModel.Started_On = this.Started_On;
     this.upgradeModel.Invoice_File = this.Invoice_File;
+    this.upgradeModel.subscription = this.subscriptionID;
     this.save();
   }
 
+  selectSubscription(event: any) {
+    this.subscriptionID = event.target.value;
+  }
   amountPaid(event: any) {
     this.Amount_Paid = event.target.value;
   }

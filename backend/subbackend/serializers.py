@@ -8,10 +8,10 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
         fields = ['Provider_Name', 'Created_On', 'Current_Start_Date', 'Current_End_Date', 'Is_Automatic_Payment_Enabled',
-                  'Last_Modified_On', 'Status']
+                  'Last_Modified_On']
 
 
 class SubscriptionDetailSerializer(serializers.ModelSerializer):
-    model = SubsDetails
-    fields = ['Amount_Paid', 'Started_On', 'Ends_On',
-              'Invoice_File', 'subscription']
+    class Meta:
+        model = SubsDetails
+        fields = "__all__"

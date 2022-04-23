@@ -1,6 +1,15 @@
 <div class="form-style-2">
   <div class="form-style-2-heading">Provide your information</div>
   <form action="" method="post">
+    <label for="field0"
+      ><span class="adjust">Subscribe</span
+      ><select id="option" (change)="selectSubscription($event)">
+        <option value="select">Select</option>
+        <option *ngFor="let company of data; let i = index" value="{{ i + 6 }}">
+          {{ company.Provider_Name }}
+        </option>
+      </select></label
+    >
     <label for="field1"
       ><span class="adjust">Amount Paid </span
       ><input
@@ -12,23 +21,12 @@
     /></label>
     <label for="field2"
       ><span class="adjust">Started on</span
-      ><input
-        type="text"
-        (keyup)="startOn($event)"
-        class="input-field"
-        name="field2"
-        value=""
+      ><input type="date" name="Started" (change)="startOn($event)"
     /></label>
 
     <label for="field3"
       ><span class="adjust"> Ends on <span class="required"></span></span
-      ><input
-        type="text"
-        (keyup)="endOn($event)"
-        class="input-field"
-        name="field2"
-        value=""
-      />
+      ><input type="date" name="Ends" (change)="endOn($event)" />
     </label>
     <label for="field4"
       ><span class="adjust"> Invoice File <span class="required"></span></span
