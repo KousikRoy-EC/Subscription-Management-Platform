@@ -3,7 +3,7 @@ export class subscriptionModel {
   'Created_On': string;
   'Current_Start_Date': string;
   'Current_End_Date': string;
-  'Is_Automatic_Payment_Enabled': string;
+  'Is_Automatic_Payment_Enabled': Boolean;
   'Last_Modified_On': string;
 }
 
