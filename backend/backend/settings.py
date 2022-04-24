@@ -58,10 +58,20 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
 ]
+
+
+TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
+NOSE_ARGS = [
+    "--cover-erase",
+    "--with-xunit",
+    "--xunit-file=Xunittest.xml",
+]
+
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 

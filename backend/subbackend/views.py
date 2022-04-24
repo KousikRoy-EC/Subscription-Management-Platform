@@ -1,5 +1,4 @@
 
-from django.shortcuts import render
 from subbackend.models import SubsDetails,  Subscription
 from subbackend.serializers import SubscriptionSerializer, SubscriptionDetailSerializer
 from rest_framework.response import Response
@@ -8,10 +7,11 @@ from rest_framework import status
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
-from rest_framework.parsers import MultiPartParser
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
-@api_view(['POST', 'GET', 'PUT', 'DELETE'])
+@api_view(['POST', 'GET', 'DELETE'])
 def subscriptions(req):
     if req.method == 'POST':
         serializer = SubscriptionSerializer(data=req.data)
@@ -37,14 +37,15 @@ def currUserSubs(req, id):
         return JsonResponse(serializer.data, safe=False)
 
 
+@api_view(['POST', 'GET', 'DELETE'])
 def getSubsById(request, id):
     try:
-        subscription = Subscription.objects.get(id=id)
+        subscription = Subscription.objects.filter(id=id)
     except Subscription.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = SubscriptionSerializer(subscription)
+        serializer = SubscriptionSerializer(subscription, many=True)
         return Response(serializer.data)
 
     elif request.method == 'DELETE':
@@ -76,14 +77,15 @@ def getUpdatedSubs(req):
 
 @csrf_exempt
 @api_view(["POST"])
-def renewSubscription(req, id):
+def renewSubscription(req, id, *args, **kwargs):
+    parser_classes = (MultiPartParser, FormParser)
     if req.method == 'POST':
-        print(req.data)
         startDate = req.data['Started_On']
         endDate = req.data['Ends_On']
         Subscription.objects.filter(id=id).update(
             Current_Start_Date=startDate, Current_End_Date=endDate)
-        serializer = SubscriptionDetailSerializer(data=req.data)
+        serializer = SubscriptionDetailSerializer(
+            data=req.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -94,6 +96,6 @@ def renewSubscription(req, id):
 
 def subscriptionDeatils(req):
     if req.method == 'GET':
-        data = subscriptionDeatils.objects.all()
-        serializer = SubscriptionSerializer(data, many=True)
+        data = SubsDetails.objects.all()
+        serializer = SubscriptionDetailSerializer(data, many=True)
         return JsonResponse(serializer.data, safe=False)

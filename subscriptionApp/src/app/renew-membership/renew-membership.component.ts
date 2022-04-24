@@ -27,7 +27,7 @@ export class RenewMembershipComponent implements OnInit {
   subscriptionID!: any;
   save() {
     this.subscservice.updateSubscription(this.upgradeModel).subscribe(
-      (res) => console.log('res'),
+      (res) => console.log(res),
       (err) => console.log(err)
     );
   }

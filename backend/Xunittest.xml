@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite name="nosetests" tests="1" errors="1" failures="0" skip="0"><testcase classname="tests.SubscriptionTest" name="test_post_subscDetails" time="0.001"><error type="builtins.AttributeError" message="type object 'SubsDetails' has no attribute 'object'"><![CDATA[Traceback (most recent call last):
+  File "C:\Python\Python310\lib\unittest\case.py", line 59, in testPartExecutor
+    yield
+  File "C:\Python\Python310\lib\unittest\case.py", line 587, in run
+    self._callSetUp()
+  File "C:\Python\Python310\lib\unittest\case.py", line 546, in _callSetUp
+    self.setUp()
+  File "C:\Users\kaush\Desktop\WebDevop\InternshipsProject\Project2\backend\tests\tests.py", line 19, in setUp
+    SubsDetails.object.create(
+AttributeError: type object 'SubsDetails' has no attribute 'object'
+]]></error></testcase></testsuite>
