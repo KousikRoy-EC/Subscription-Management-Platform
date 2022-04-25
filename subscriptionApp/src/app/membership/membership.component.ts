@@ -10,8 +10,32 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MembershipComponent implements OnInit {
   constructor(public subscservice: SubscriptionService, http: HttpClient) {}
+  data!: any;
+  expSubscription!: any;
+  deadline!: any;
+  ngOnInit(): void {
+    this.subscservice.getAllSubscription().subscribe(
+      (res) => (this.data = res),
+      (err) => console.log(err)
+    );
 
-  ngOnInit(): void {}
+    let yourDate = new Date();
+    this.deadline = yourDate.toISOString().split('T')[0];
+  }
+
+  filterData() {
+    this.expSubscription = this.data.filter((element: any) => {
+      var day = element.Current_End_Date[8] + element.Current_End_Date[9];
+      var day2 = this.deadline[8] + this.deadline[9];
+      console.log(day, day2);
+
+      return (
+        element.Current_End_Date == this.deadline ||
+        parseInt(day2) - parseInt(day) < 7
+      );
+    });
+    console.log(this.expSubscription);
+  }
 
   newSubscription = new subscriptionModel();
   Provider_Name!: any;

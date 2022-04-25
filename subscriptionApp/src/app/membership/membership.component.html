@@ -1,5 +1,7 @@
 <div class="form-style-2">
-  <div class="form-style-2-heading">Provide your information</div>
+  <div (click)="filterData()" class="form-style-2-heading">
+    Provide your information
+  </div>
   <form>
     <label for="field1"
       ><span class="adjust">Provider Name </span
@@ -29,4 +31,15 @@
         (click)="addSubscription()"
     /></label>
   </form>
+
+  <div>
+    <div
+      class="endingSubs"
+      *ngFor="let company of expSubscription; let i = index"
+      value=""
+    >
+      Subscription Ending --- {{ company.Provider_Name }} ---
+      {{ company.Current_End_Date }}
+    </div>
+  </div>
 </div>
