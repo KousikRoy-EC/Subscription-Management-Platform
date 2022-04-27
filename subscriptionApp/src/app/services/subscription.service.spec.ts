@@ -32,4 +32,36 @@ describe('SubscriptionService', () => {
       expect(res).toEqual(subscribtion);
     });
   });
+
+  it('should return all subscription', () => {
+    let result: subscriptionModel[] = [];
+    service.getAllSubscription().subscribe((r: any) => {
+      result = r;
+      expect(r.length).toBe(1);
+      expect(result[0]).toEqual(subscribtion);
+    });
+    const req = httpTestingController.expectOne(service.baseUrl);
+    expect(req.request.method).toBe('GET');
+    req.flush([subscribtion]);
+  });
+
+  it('should get one subscription by ID', () => {
+    service.getSubscriptionById('1').subscribe((res) => {
+      expect(res).toEqual(subscribtion);
+    });
+
+    const req = httpTestingController.expectOne(service.baseUrl + '/' + 1);
+    expect(req.request.method).toBe('GET');
+    req.flush(subscribtion);
+  });
+
+  it('should delete one subscription', () => {
+    service.deleteSubscription('1').subscribe((res) => {
+      expect(res).toEqual(subscribtion);
+    });
+
+    const req = httpTestingController.expectOne(service.baseUrl + '/' + '1');
+    expect(req.request.method).toBe('DELETE');
+    req.flush(subscribtion);
+  });
 });
