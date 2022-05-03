@@ -1,7 +1,5 @@
 <div class="form-style-2">
-  <div (click)="filterData()" class="form-style-2-heading">
-    Provide your information
-  </div>
+  <div class="form-style-2-heading">Provide your information</div>
   <form>
     <label for="field1"
       ><span class="adjust">Provider Name </span
@@ -30,6 +28,9 @@
         value="Subscribe"
         (click)="addSubscription()"
     /></label>
+    <button class="submitOfNext" type="button" (click)="filterData()">
+      Subscription ending in 7 days
+    </button>
   </form>
 
   <div>
